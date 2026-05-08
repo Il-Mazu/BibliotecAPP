@@ -8,7 +8,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(express.json());
 app.use(cors());
 let db;
@@ -31,6 +30,10 @@ startServer();
 app.get("/books", async (req, res, next)=>{
     try{
 
+<<<<<<< HEAD
+app.get('/', (req, res) => {
+  res.json({ message: 'BibliotecAPP Backend Server is running!' });
+=======
         const booksCollection= db.collection("books");
         const filter={};
         const books= await booksCollection.find(filter).toArray();
@@ -38,6 +41,7 @@ app.get("/books", async (req, res, next)=>{
     }catch(err){
         next(err);
     }
+>>>>>>> 4d721fdbda3f384dd91806343db6c9f9751d9113
 });
 
 
