@@ -58,8 +58,27 @@ const GENRE_COLORS = {
 };
 
 function BookCoverSVG({ title, author, color, size = "full" }) {
-  const w = size === "full" ? 160 : 60;
-  const h = size === "full" ? 220 : 84;
+  if (size === "small") {
+    return (
+      <div
+        style={{
+          width: 60,
+          height: 84,
+          background: color,
+          borderRadius: 6,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0
+        }}
+      >
+        <span className="material-symbols-outlined" style={{ fontSize: 24, color: 'white' }}>menu_book</span>
+      </div>
+    );
+  }
+
+  const w = 160;
+  const h = 220;
   const words = title.split(" ");
   const mid = Math.ceil(words.length / 2);
   const line1 = words.slice(0, mid).join(" ");
@@ -83,16 +102,9 @@ function BookCoverSVG({ title, author, color, size = "full" }) {
       <rect x="8" y="8" width={w - 16} height={h - 16} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" rx="2" />
       <rect x="8" y={h - 36} width={w - 16} height="1" fill="rgba(255,255,255,0.25)" />
 
-      {size === "full" && (
-        <>
-          <text x={w / 2} y={h / 2 - 14} textAnchor="middle" fill="white" fontSize="13" fontWeight="600" fontFamily="Georgia, serif">{line1}</text>
-          <text x={w / 2} y={h / 2 + 4}  textAnchor="middle" fill="white" fontSize="13" fontWeight="600" fontFamily="Georgia, serif">{line2}</text>
-          <text x={w / 2} y={h - 18}      textAnchor="middle" fill="rgba(255,255,255,0.75)" fontSize="9" fontFamily="Georgia, serif">{author}</text>
-        </>
-      )}
-      {size === "small" && (
-        <text x={w / 2} y={h / 2 + 4} textAnchor="middle" fill="white" fontSize="8" fontWeight="600" fontFamily="Georgia, serif">📖</text>
-      )}
+      <text x={w / 2} y={h / 2 - 14} textAnchor="middle" fill="white" fontSize="13" fontWeight="600" fontFamily="Georgia, serif">{line1}</text>
+      <text x={w / 2} y={h / 2 + 4}  textAnchor="middle" fill="white" fontSize="13" fontWeight="600" fontFamily="Georgia, serif">{line2}</text>
+      <text x={w / 2} y={h - 18}      textAnchor="middle" fill="rgba(255,255,255,0.75)" fontSize="9" fontFamily="Georgia, serif">{author}</text>
     </svg>
   );
 }
@@ -194,7 +206,7 @@ function AddBookModal({ onClose, onAdd }) {
             <h2>Aggiungi un libro</h2>
             <p>Cerca nel catalogo OpenLibrary o inserisci manualmente</p>
           </div>
-          <button className="btn-modal-close" onClick={onClose}>✕</button>
+          <button className="btn-modal-close" onClick={onClose}><span className="material-symbols-outlined">close</span></button>
         </div>
 
         <form className="search-form" onSubmit={handleSearch}>
@@ -204,7 +216,7 @@ function AddBookModal({ onClose, onAdd }) {
             placeholder="Cerca titolo, autore…"
           />
           <button type="submit" className="btn-search" disabled={loading}>
-            {loading ? "…" : "Cerca"}
+            {loading ? <span className="material-symbols-outlined">hourglass_empty</span> : "Cerca"}
           </button>
         </form>
 
@@ -242,7 +254,7 @@ function AddBookModal({ onClose, onAdd }) {
               <p className="label">Libro selezionato</p>
               <p className="title">{form.title}</p>
             </div>
-            <button className="btn-clear-selection" onClick={clearSelection}>✕</button>
+            <button className="btn-clear-selection" onClick={clearSelection}><span className="material-symbols-outlined">close</span></button>
           </div>
         )}
 
@@ -354,7 +366,9 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-logo">
-          <div className="header-logo-icon">📚</div>
+          <div className="header-logo-icon">
+            <img src="/logo.svg" alt="BibliotecApp Logo" style={{ width: '24px', height: '24px' }} />
+          </div>
           <div>
             <h1>BibliotecApp</h1>
             <p>GESTIONE COLLEZIONE</p>
@@ -374,7 +388,7 @@ export default function App() {
       <main className="app-main">
         <div className="filters-bar">
           <div className="search-wrapper">
-            <span className="search-icon">🔍</span>
+            <span className="search-icon material-symbols-outlined">search</span>
             <input
               className="search-input"
               value={searchQuery}
@@ -403,7 +417,7 @@ export default function App() {
 
         {filtered.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">📭</div>
+            <div className="empty-icon material-symbols-outlined">inbox</div>
             <p>Nessun libro trovato</p>
           </div>
         ) : (
@@ -450,7 +464,7 @@ export default function App() {
                         title="Elimina"
                         onClick={e => { e.stopPropagation(); deleteBook(book.id); }}
                       >
-                        ×
+                        <span className="material-symbols-outlined">close</span>
                       </button>
                     </div>
                   </div>

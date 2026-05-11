@@ -1,9 +1,7 @@
 import React from 'react';
 
 const BookList = () => {
-  const testBooks = [
-    { id: 1, title: 'Franco gatti', author: 'Gatti franco', year: 1980, genre: 'Giallo Storico' },
-  ];
+ 
 
   return (
     <div className="book-list-container">
