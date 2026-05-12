@@ -218,7 +218,7 @@ body[data-theme="dark"] {
   display: flex;
   gap: 16px;
   margin-bottom: 36px;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
 }
 
