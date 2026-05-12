@@ -15,7 +15,7 @@ const SAMPLE_BOOKS = [
   },
   {
     id: 2,
-    title: "Se una notte d'inverno un viaggiatore",
+    title: "Se una notte d'inverno ...",
     author: "Italo Calvino",
     year: 1979,
     genre: "Metafiction",
@@ -349,6 +349,11 @@ export default function App() {
   const [detailBook,   setDetailBook]   = useState(null);
   const [searchQuery,  setSearchQuery]  = useState("");
   const [filterGenre,  setFilterGenre]  = useState("Tutti");
+  const [theme,        setTheme]        = useState(() => {
+    const stored = window.localStorage.getItem("bibliotecapp-theme");
+    if (stored === "light" || stored === "dark") return stored;
+    return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  });
 
   const genres = ["Tutti", ...Array.from(new Set(books.map(b => b.genre).filter(Boolean)))];
 
@@ -362,8 +367,15 @@ export default function App() {
   const addBook    = (book) => { setBooks(prev => [book, ...prev]); setShowAddModal(false); };
   const deleteBook = (id)   =>  setBooks(prev => prev.filter(b => b.id !== id));
 
+  useEffect(() => {
+    document.body.dataset.theme = theme;
+    window.localStorage.setItem("bibliotecapp-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === "light" ? "dark" : "light");
+
   return (
-    <div className="app">
+    <div className={`app ${theme}`}>
       <header className="app-header">
         <div className="header-logo">
           <div className="header-logo-icon">
@@ -379,6 +391,16 @@ export default function App() {
           <div className="header-count">
             <strong>{books.length}</strong> libri in catalogo
           </div>
+          <button
+            className="btn-theme-toggle"
+            onClick={toggleTheme}
+            aria-label={theme === "light" ? "Attiva modalità scura" : "Attiva modalità chiara"}
+          >
+            <span className="material-symbols-outlined">
+              {theme === "light" ? "dark_mode" : "light_mode"}
+            </span>
+            {theme === "light" ? "" : ""}
+          </button>
           <button className="btn-add-book" onClick={() => setShowAddModal(true)}>
             <span className="plus">+</span> Aggiungi libro
           </button>
