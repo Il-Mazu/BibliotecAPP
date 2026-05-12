@@ -6,9 +6,8 @@ function BookForm() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched]= useState(false);
 
-  // 1. La funzione viene chiamata solo al submit del form
   const handleSearch = async (e) => {
-    e.preventDefault(); // Impedisce il refresh della pagina
+    e.preventDefault(); 
     setHasSearched(true);
     if (query.trim().length < 2) {
       alert("Inserisci almeno 2 caratteri per la ricerca");
@@ -33,7 +32,6 @@ function BookForm() {
     <div className="book-form-container">
       <h2>Aggiungi un Nuovo Libro</h2>
       
-      {/* 2. Colleghiamo handleSearch qui */}
       <form className="book-form" onSubmit={handleSearch}>
         <div className="form-group">
           <label htmlFor="title">Titolo</label>

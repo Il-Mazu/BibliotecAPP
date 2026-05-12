@@ -199,7 +199,7 @@ body[data-theme="dark"] {
 .btn-theme-toggle:hover {
   opacity: 0.96;
   transform: translateY(-1px);
-  box-shadow: 0 18px 32px rgba(0,0,0,0.08);
+  box-shadow: 0 18px 32px rgba(0,0,0,0.08) ;
 }
 
 .btn-add-book .plus {
@@ -884,3 +884,65 @@ body[data-theme="dark"] {
 .btn-close-detail:hover {
   opacity: 0.88;
 }
+.toggle-switch {
+  position: relative;
+  width: 64px;
+  height: 32px;
+  --light: #d8dbe0;
+  --dark: #28292c;
+  --link: rgb(27, 129, 112);
+  --link-hover: rgb(24, 94, 82);
+}
+
+.switch-label {
+  position: absolute;
+  width: 100%;
+  height: 32px;
+  background-color: var(--dark);
+  border-radius: 16px;
+  cursor: pointer;
+  border: 3px solid var(--dark);
+}
+
+.checkbox {
+  position: absolute;
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.checkbox:checked ~ .slider {
+  background-color: var(--light);
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  -webkit-box-shadow: inset 8px -2px 0px 0px var(--light);
+  box-shadow: inset 8px -2px 0px 0px var(--light);
+  background-color: var(--dark);
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.checkbox:checked ~ .slider::before {
+  -webkit-transform: translateX(32px);
+  -ms-transform: translateX(32px);
+  transform: translateX(32px);
+  background-color: var(--dark);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+

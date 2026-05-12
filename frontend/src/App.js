@@ -391,16 +391,23 @@ export default function App() {
           <div className="header-count">
             <strong>{books.length}</strong> libri in catalogo
           </div>
-          <button
-            className="btn-theme-toggle"
-            onClick={toggleTheme}
-            aria-label={theme === "light" ? "Attiva modalità scura" : "Attiva modalità chiara"}
-          >
-            <span className="material-symbols-outlined">
-              {theme === "light" ? "dark_mode" : "light_mode"}
-            </span>
-            {theme === "light" ? "" : ""}
-          </button>
+          
+          <div className="toggle-switch">
+            <label
+              className="switch-label"
+              aria-label={theme === "light" ? "Attiva modalità scura" : "Attiva modalità chiara"}
+              title={theme === "light" ? "Attiva modalità scura" : "Attiva modalità chiara"}
+            >
+              <input
+                type="checkbox"
+                className="checkbox"
+                checked={theme === "dark"}
+                onChange={toggleTheme}
+              />
+              <span className="slider"></span>
+            </label>
+          </div>
+
           <button className="btn-add-book" onClick={() => setShowAddModal(true)}>
             <span className="plus">+</span> Aggiungi libro
           </button>
