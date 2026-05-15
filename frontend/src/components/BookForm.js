@@ -6,8 +6,9 @@ function BookForm() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched]= useState(false);
 
+  // 1. La funzione viene chiamata solo al submit del form
   const handleSearch = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault(); // Impedisce il refresh della pagina
     setHasSearched(true);
     if (query.trim().length < 2) {
       alert("Inserisci almeno 2 caratteri per la ricerca");
@@ -32,6 +33,7 @@ function BookForm() {
     <div className="book-form-container">
       <h2>Aggiungi un Nuovo Libro</h2>
       
+      {/* 2. Colleghiamo handleSearch qui */}
       <form className="book-form" onSubmit={handleSearch}>
         <div className="form-group">
           <label htmlFor="title">Titolo</label>
@@ -53,9 +55,17 @@ function BookForm() {
       <ul>
         {results.length > 0 ? (
           results.map((book) => (
-            <li key={book.openLibraryKey}>
-              {book.title} — {book.author} ({book.year})
-            </li>
+           <li key={book.openLibraryKey}>
+            {book.title} — {book.author} ({book.year})
+            {book.coverId && (
+              <img
+                src={`https://covers.openlibrary.org/b/id/${book.coverId}-S.jpg`}
+                alt={book.title}
+                style={{ display: 'none' }}
+                onLoad={(e) => e.target.style.display = 'block'}
+              />
+            )}
+          </li>
           ))
         ) : (
           !loading && hasSearched && query && <li>Nessun risultato trovato</li>
