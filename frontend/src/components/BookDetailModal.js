@@ -15,7 +15,12 @@ export default function BookDetailModal({ book, onClose, onDelete }) {
   return (
     <div className="detail-modal">
       <div className="detail-top">
-        <BookCover title={book.title} author={book.author} color={book.coverColor} />
+        <BookCover
+          title={book.title}
+          author={book.author}
+          color={book.coverColor}
+          coverUrl={book.coverUrl}
+        />
         <div className="detail-info">
           <div style={{ marginBottom: 12 }}>
             <span className="genre-badge" style={{ background: genre.bg, color: genre.text }}>

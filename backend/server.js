@@ -2,6 +2,7 @@ import express from "express";
 import connectDB from "./db.js";
 import cors from "cors";
 import dotenv from "dotenv";
+import { searchOpenLibrary } from "./openLibrarySearch.js";
 
 dotenv.config();
 
@@ -46,20 +47,7 @@ app.get("/openlibrary/search", async (req, res, next) => {
       return res.status(400).json({ error: "nome troppo corto" });
     }
 
-    const response = await fetch(
-      `https://openlibrary.org/search.json?title=${encodeURIComponent(q)}&limit=10`
-    );
-    const data = await response.json();
-
-    const books = data.docs.map((book) => ({
-      title: book.title,
-      author: book.author_name?.[0] || "Autore sconosciuto",
-      year: book.first_publish_year || null,
-      isbn: book.isbn?.[0] || null,
-      coverId: book.cover_i || null,
-      openLibraryKey: book.key,
-    }));
-
+    const books = await searchOpenLibrary(q);
     res.json(books);
   } catch (err) {
     next(err);

@@ -1,3 +1,12 @@
+import { openLibraryCoverUrl } from "../api/openLibraryCovers";
+
+function withCover(book) {
+  return {
+    ...book,
+    coverUrl: openLibraryCoverUrl({ isbn: book.isbn }, "M"),
+  };
+}
+
 export const SAMPLE_BOOKS = [
   {
     id: 1,
@@ -43,7 +52,7 @@ export const SAMPLE_BOOKS = [
     pages: 192,
     isbn: "978-8845289958",
   },
-];
+].map(withCover);
 
 export const GENRE_COLORS = {
   "Romanzo storico": { bg: "#E4E8DC", text: "#3A4A32" },

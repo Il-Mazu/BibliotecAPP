@@ -1,27 +1,32 @@
-export default function BookCover({ title, author, color, size = "full" }) {
-  if (size === "small") {
-    return (
-      <div
-        style={{
-          width: 60,
-          height: 84,
-          background: color,
-          borderRadius: 6,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
-        }}
-      >
-        <span className="material-symbols-outlined" style={{ fontSize: 24, color: "white" }}>
-          menu_book
-        </span>
-      </div>
-    );
-  }
+import { useState } from "react";
 
-  const w = 160;
-  const h = 220;
+const SIZES = {
+  small: { w: 60, h: 84, radius: 6 },
+  full: { w: 160, h: 220, radius: 6 },
+};
+
+function PlaceholderIcon({ color, w, h, radius }) {
+  return (
+    <div
+      style={{
+        width: w,
+        height: h,
+        background: color,
+        borderRadius: radius,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+      }}
+    >
+      <span className="material-symbols-outlined" style={{ fontSize: 24, color: "white" }}>
+        menu_book
+      </span>
+    </div>
+  );
+}
+
+function SvgCover({ title, author, color, w, h }) {
   const words = title.split(" ");
   const mid = Math.ceil(words.length / 2);
   const line1 = words.slice(0, mid).join(" ");
@@ -87,4 +92,37 @@ export default function BookCover({ title, author, color, size = "full" }) {
       </text>
     </svg>
   );
+}
+
+export default function BookCover({ title, author, color, coverUrl, size = "full" }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const { w, h, radius } = SIZES[size] || SIZES.full;
+
+  if (coverUrl && !imgFailed) {
+    return (
+      <img
+        src={coverUrl}
+        alt={`Copertina di ${title}`}
+        width={w}
+        height={h}
+        loading="lazy"
+        onError={() => setImgFailed(true)}
+        style={{
+          display: "block",
+          width: w,
+          height: h,
+          objectFit: "cover",
+          borderRadius: radius,
+          flexShrink: 0,
+          background: color,
+        }}
+      />
+    );
+  }
+
+  if (size === "small") {
+    return <PlaceholderIcon color={color} w={w} h={h} radius={radius} />;
+  }
+
+  return <SvgCover title={title} author={author} color={color} w={w} h={h} />;
 }

@@ -3,6 +3,7 @@ import BookCover from "./BookCover";
 import { ADD_BOOK_FIELDS } from "../constants/addBookFields";
 import { previewColorFromKey, randomCoverColor } from "../constants/books";
 import { searchOpenLibrary } from "../api/openLibrary";
+import { openLibraryCoverUrl } from "../api/openLibraryCovers";
 
 const EMPTY_FORM = {
   title: "",
@@ -63,9 +64,18 @@ export default function AddBookModal({ onClose, onAdd }) {
 
   const handleSubmit = () => {
     if (!form.title.trim()) return;
+    const coverKeys = {
+      coverId: selected?.coverId ?? null,
+      isbn: form.isbn || null,
+    };
     onAdd({
       id: Date.now(),
       ...form,
+      year: form.year ? Number(form.year) : null,
+      pages: form.pages ? Number(form.pages) : null,
+      coverId: coverKeys.coverId,
+      coverUrl:
+        selected?.coverUrl ?? openLibraryCoverUrl(coverKeys, "M"),
       coverColor: randomCoverColor(),
     });
   };
@@ -116,12 +126,16 @@ export default function AddBookModal({ onClose, onAdd }) {
                     title={book.title}
                     author={book.author}
                     color={previewColor}
+                    coverUrl={book.coverUrlSmall || book.coverUrl}
                     size="small"
                   />
                   <div className="result-item-info">
                     <p>{book.title}</p>
                     <p>
-                      {book.author} · {book.year}
+                      {[book.author, book.year, book.genre]
+                        .filter(Boolean)
+                        .join(" · ")}
+                      {book.pages ? ` · ${book.pages} pp.` : ""}
                     </p>
                   </div>
                 </div>
@@ -142,6 +156,7 @@ export default function AddBookModal({ onClose, onAdd }) {
               title={form.title}
               author={form.author}
               color={previewColor}
+              coverUrl={selected.coverUrlSmall || selected.coverUrl}
               size="small"
             />
             <div>

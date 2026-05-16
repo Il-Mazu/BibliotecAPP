@@ -17,7 +17,12 @@ export default function BookCard({ book, index, onSelect, onDelete }) {
         }}
       >
         <div className="cover-wrap">
-          <BookCover title={book.title} author={book.author} color={book.coverColor} />
+          <BookCover
+            title={book.title}
+            author={book.author}
+            color={book.coverColor}
+            coverUrl={book.coverUrl}
+          />
         </div>
         <div className="card-cover-info">
           <span className="genre-badge" style={{ background: genre.bg, color: genre.text }}>
